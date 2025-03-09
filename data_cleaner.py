@@ -1,6 +1,7 @@
 import re
 from rapidfuzz import process, fuzz
-import streamlit as st 
+import pandas as pd
+import streamlit as st
 
 def clean_data(shipments_df, pos_df, supermarkets, selected_products):
     # Drop empty columns
@@ -43,6 +44,9 @@ def clean_data(shipments_df, pos_df, supermarkets, selected_products):
 
     # Convert all undefined cells to 0
     shipments_df = shipments_df.fillna(0)
+    
+    # Convert date headers to YYYY-MM format
+    shipments_df.columns = [clean_date_headers(col) for col in shipments_df.columns]
 
     return shipments_df
 
@@ -51,3 +55,13 @@ def levenshtein_match(product_or_smarket, supermarkets):
     if score < 75:
         return None
     return match
+
+def clean_date_headers(header):
+    c_header = header.upper().strip()
+    st.write(header, '|', c_header)
+    match = re.match(r"([A-Z]{3})(\d{4})", c_header)
+    if match:
+        month_str, year = match.groups()
+        month_num = pd.to_datetime(month_str, format="%b").month
+        return f"{year}-{month_num:02d}"
+    return header
