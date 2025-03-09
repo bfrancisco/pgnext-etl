@@ -2,11 +2,11 @@ import re
 from rapidfuzz import process, fuzz
 import streamlit as st 
 
-def clean_data(shipments_df, pos_df, supermarkets):
+def clean_data(shipments_df, pos_df, supermarkets, selected_products):
     # Drop empty columns
     shipments_df = shipments_df.dropna(axis=1, how='all')
 
-    # Drop columns containing zero
+    # Drop columns containing all zero
     shipments_df = shipments_df.loc[:, (shipments_df != 0).any(axis=0)] 
 
     # Rename the first column to "Products"
@@ -37,6 +37,9 @@ def clean_data(shipments_df, pos_df, supermarkets):
     
     for _, drop_i in valid_smarkets:
         shipments_df.drop(drop_i, inplace=True)
+
+    # Filter out unselected products
+    shipments_df.drop(shipments_df[~shipments_df["Products"].isin(selected_products)].index, inplace=True)
 
     return shipments_df
 
