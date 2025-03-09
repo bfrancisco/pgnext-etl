@@ -22,4 +22,10 @@ def load_supermarkets(file):
         supermarkets = f.read().splitlines()
     return supermarkets
 
+def load_png_products(file):
+    "takes a txt file and returns a list of PNG products"
+    with open(file, "r") as f:
+        png_products = f.read().splitlines()
+    return png_products
+
 
