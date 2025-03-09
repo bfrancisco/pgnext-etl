@@ -1,6 +1,6 @@
 import streamlit as st
 from data_loader import load_data, load_supermarkets, load_png_products
-from data_cleaner import clean_data
+from data_cleaner import clean_shipment, clean_pos, combine_shipment_pos
 
 def main():
     st.title("Team OlayFans ETL App")
@@ -14,17 +14,17 @@ def main():
         shipments_df, pos_df = load_data(uploaded_file)
         
         if not shipments_df.empty and not pos_df.empty:
-            st.write("Original Data")
-            st.write(shipments_df)
+            cleaned_shipments_df = clean_shipment(shipments_df, supermarkets, selected_products)
+            cleaned_pos_df = clean_pos(pos_df, supermarkets, selected_products)
             
-            cleaned_df = clean_data(shipments_df, pos_df, supermarkets, selected_products)
+            st.write(cleaned_shipments_df)
+            st.write(cleaned_pos_df)
             
-            st.write("Cleaned Data")
-            st.write(cleaned_df)
-            
+            combined_df = combine_shipment_pos(cleaned_shipments_df, cleaned_pos_df)
+            st.write(combined_df)
             cleaned_file = st.download_button(
                 label="Download Cleaned Data",
-                data=cleaned_df.to_csv(index=False).encode('utf-8'),
+                data=combined_df.to_csv(index=False).encode('utf-8'),
                 file_name='cleaned_data.csv',
                 mime='text/csv'
             )
