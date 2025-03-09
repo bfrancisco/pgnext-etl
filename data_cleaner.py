@@ -161,6 +161,22 @@ def combine_shipment_pos(shipments_df, pos_df):
     # Combine rows with the same Product, Retailer, Year, and Month
     combined_df = combined_df.groupby(["Product", "Retailer", "Year", "Month"], as_index=False).sum()
 
+    # Rename columns    
+    combined_df.rename(columns={"Sales Sum": "Sales Sum (PHP)"}, inplace=True)
+    combined_df.rename(columns={"Qty Sum": "Qty Sum (Units)"}, inplace=True)
+
+    # Add aggregate columns
+    combined_df["Retailer Efficiency"] = (combined_df["Sales Sum (PHP)"] / combined_df["Shipment Amount (PHP)"]) * 100
+    combined_df["Retailer Efficiency"] = combined_df["Retailer Efficiency"].apply(lambda x: f"{x:.3f}%")
+
+    combined_df["Unsold Amount (PHP)"] = combined_df["Shipment Amount (PHP)"] - combined_df["Sales Sum (PHP)"]
+
+    combined_df["Est. Selling Price per Unit (PHP)"] = combined_df["Sales Sum (PHP)"] / combined_df["Qty Sum (Units)"]
+
+    combined_df["Est. Amount of Units Shipped"] = combined_df["Shipment Amount (PHP)"] / combined_df["Est. Selling Price per Unit (PHP)"]
+
+    combined_df["Est. Remaining Stock"] = combined_df["Est. Amount of Units Shipped"] - combined_df["Qty Sum (Units)"]
+
     combined_df.reset_index(drop=True, inplace=True)
 
     return combined_df
