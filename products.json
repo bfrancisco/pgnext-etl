@@ -1,0 +1,56 @@
+{
+    "png_product_categories" : [
+        {
+            "category": "Personal Health Care",
+            "products": ["Neurobion", "Vicks", "Sangobion", "Dolo Neurobion", "Hemobion"]
+        },
+        {
+            "category": "Home Care",
+            "products": ["Ambipur", "Febreze", "Joy", "Fairy", "Downy Air Care"]
+        },
+        {
+            "category": "Feminine Care",
+            "products": ["Whisper"]
+        },
+        {
+            "category": "Fabric Care",
+            "products": ["Ariel", "Downy", "Tide", "Bonux", "Downy Detergent"]
+        },
+        {
+            "category": "Hair Care",
+            "products": ["Head & Shoulders", "Herbal Essences", "Pantene", "Rejoice", "Vidal Sassoon"]
+        },
+        {
+            "category": "Oral Care",
+            "products": ["Oral-B"]
+        },
+        {
+            "category": "Family Care",
+            "products": ["Safeguard"]
+        },
+        {
+            "category": "Baby Care",
+            "products": ["Pampers"]
+        },
+        {
+            "category": "Skin and Personal Care",
+            "products": ["Olay", "Olay Skin", "Camay", "Zest"]
+        },
+        {
+            "category": "Grooming",
+            "products": ["Gillette", "Venus", "Braun"]
+        },
+        {
+            "category": "Deodorants & Body Sprays",
+            "products": ["Old Spice AP/DO & Body Spray", "Secret AP/DO & Body Spray", "Safeguard AP/DO & Body Spray", "Gillette AP/DO & Body Spray"]
+        },
+        {
+            "category": "Personal Cleansing Care",
+            "products": ["Old Spice PCC", "Safeguard PCC", "Olay PCC"]
+        },
+        {
+            "category": "P&G Next Business Case Products",
+            "products": ["Ariel", "Downy", "Tide"]
+        }
+    ]
+}

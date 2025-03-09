@@ -6,7 +6,7 @@ def clean_data(shipments_df, pos_df, supermarkets, selected_products):
     # Drop empty columns
     shipments_df = shipments_df.dropna(axis=1, how='all')
 
-    # Drop columns containing all zero
+    # Drop columns containing only zeroes
     shipments_df = shipments_df.loc[:, (shipments_df != 0).any(axis=0)] 
 
     # Rename the first column to "Products"
@@ -40,6 +40,9 @@ def clean_data(shipments_df, pos_df, supermarkets, selected_products):
 
     # Filter out unselected products
     shipments_df.drop(shipments_df[~shipments_df["Products"].isin(selected_products)].index, inplace=True)
+
+    # Convert all undefined cells to 0
+    shipments_df = shipments_df.fillna(0)
 
     return shipments_df
 
