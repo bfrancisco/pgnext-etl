@@ -169,13 +169,15 @@ def combine_shipment_pos(shipments_df, pos_df):
     combined_df["Retailer Efficiency"] = (combined_df["Sales Sum (PHP)"] / combined_df["Shipment Amount (PHP)"]) * 100
     combined_df["Retailer Efficiency"] = combined_df["Retailer Efficiency"].apply(lambda x: f"{x:.3f}%")
 
-    combined_df["Unsold Amount (PHP)"] = combined_df["Shipment Amount (PHP)"] - combined_df["Sales Sum (PHP)"]
+    # combined_df["Unsold Amount (PHP)"] = combined_df["Shipment Amount (PHP)"] - combined_df["Sales Sum (PHP)"]
 
-    combined_df["Est. Selling Price per Unit (PHP)"] = combined_df["Sales Sum (PHP)"] / combined_df["Qty Sum (Units)"]
+    # combined_df["Est. Selling Price per Unit (PHP)"] = combined_df["Sales Sum (PHP)"] / combined_df["Qty Sum (Units)"]
 
-    combined_df["Est. Amount of Units Shipped"] = combined_df["Shipment Amount (PHP)"] / combined_df["Est. Selling Price per Unit (PHP)"]
+    # combined_df["Est. Amount of Units Shipped"] = combined_df["Shipment Amount (PHP)"] / combined_df["Est. Selling Price per Unit (PHP)"]
 
-    combined_df["Est. Remaining Stock"] = combined_df["Est. Amount of Units Shipped"] - combined_df["Qty Sum (Units)"]
+    # combined_df["Est. Remaining Stock"] = combined_df["Est. Amount of Units Shipped"] - combined_df["Qty Sum (Units)"]
+
+    combined_df["Season/Holiday"] = combined_df["Month"].apply(get_season)
 
     combined_df.reset_index(drop=True, inplace=True)
 
@@ -198,3 +200,15 @@ def extract_month_year(date_str):
         month, year = match.groups()
         return pd.Series([month, year], index=["Month", "Year"])
     return pd.Series([None, None])
+
+def get_season(month):
+        month = int(month)
+        if month in [10, 11, 12]:
+            return "Christmas Holiday"
+        elif month in [1, 2]:
+            return "Normal"
+        elif month in [3, 4, 5]:
+            return "Summer Season"
+        elif month in [6, 7, 8, 9, 10, 11]:
+            return "Rainy Season"
+        return "Normal"
