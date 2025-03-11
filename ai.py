@@ -5,7 +5,7 @@ import time
 import random
 
 
-# prompt : (response, predefined_graph_index)
+# prompt : [response per line]
 predefined_messages = {
     "Predict demand for Downy in Q1 2025 using past 6 months' shipments." : 
     [
@@ -32,6 +32,7 @@ predefined_messages = {
     ],
 }
 
+# for 2nd predetermined mssg
 table_data = {
     'Month': ['Month 1', 'Month 2', 'Month 3'],
     'Forecasted Demand': [12500, 11200, 10800],
@@ -40,10 +41,6 @@ table_data = {
 }
 
 table_df = pd.DataFrame(table_data)
-
-predefined_graphs = [
-    {"type": "bar", "data": pd.DataFrame(np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]), columns=['Ariel', 'Briel', 'Criel'])},
-]
 
 def response_generator(prompt):
     if prompt in predefined_messages:
