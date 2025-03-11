@@ -4,47 +4,34 @@ import pandas as pd
 import time
 import random
 
-# Function to generate a random chart
-def get_random_chart():
-    chart_type = random.choice(["line", "bar", "area"])
-    
-    # Generate random data
-    chart_data = pd.DataFrame(
-        np.random.randn(20, 3),
-        columns=['a', 'b', 'c']
-    )
-    
-    return {"type": chart_type, "data": chart_data}
 
-# Sequential response generator with charts
-def response_generator():
-    # List of predetermined messages in sequence
-    responses = [
-        {"text": "Hello there! How can I assist you today?", "chart": False},
-        {"text": "Here's a random chart for you:", "chart": True},
-        {"text": "This is the third message in my sequence.", "chart": False},
-        {"text": "Here's another visualization:", "chart": True},
-        {"text": "After I run out of messages, I'll start over from the beginning.", "chart": False}
-    ]
-    
-    # Get the current position in the sequence
-    if "response_index" not in st.session_state:
-        st.session_state.response_index = 0
-    
-    # Get the current response and increment the index
-    response = responses[st.session_state.response_index]
-    st.session_state.response_index = (st.session_state.response_index + 1) % len(responses)
-    
-    # Return the response information
-    return response
+# prompt : (response, predefined_graph_index)
+predefined_messages = {
+    "Can you forecast the demand for this month?" : 
+    (
+    '''Sure! I’ve analyzed past sales, seasonal trends, and any patterns in your data. Here’s what I found:
+    Downy: 15,200 units (increase from last month)
+    Tide: 9,800 units (slight decrease)
+    Would you like to provide additional data on factors like stock levels, supplier lead times, or upcoming promotions to refine the forecast?''',
+    0),
+}
 
-st.title("Chat with Charts")
+predefined_graphs = [
+    {"type": "bar", "data": pd.DataFrame(np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]), columns=['Ariel', 'Briel', 'Criel'])},
+]
+
+def response_generator(prompt):
+    if prompt in predefined_messages:
+        return {"text": predefined_messages[prompt][0], "chart": predefined_messages[prompt][1]}
+    
+    return {"text": "I'm sorry, I don't understand that question. Can you please rephrase it?", "chart": -1}
+
+st.title("📊 TelaCast")
 
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Display chat messages from history on app rerun
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message.get("text", ""))
@@ -61,13 +48,12 @@ if prompt := st.chat_input("What is up?"):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "text": prompt})
     
-    print(st.session_state)
     # Display user message in chat message container
     with st.chat_message("user"):
         st.markdown(prompt)
     
     # Get the next response
-    response_info = response_generator()
+    response_info = response_generator(prompt)
     
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
@@ -77,8 +63,9 @@ if prompt := st.chat_input("What is up?"):
         chart_data = None
         chart_type = None
         
-        if response_info["chart"]:
-            chart = get_random_chart()
+        print(response_info)
+        if response_info["chart"] != -1:
+            chart = predefined_graphs[response_info["chart"]]
             chart_type = chart["type"]
             chart_data = chart["data"]
             
