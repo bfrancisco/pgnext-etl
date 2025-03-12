@@ -1,7 +1,7 @@
 import streamlit as st
 
-home = st.Page("etl.py", title="ETL")
-page1 = st.Page("ai.py", title="AI")
+etl_page = st.Page("etl.py", title="Data Cleaning")
+ai_page = st.Page("ai.py", title="TelaCast+")
 
-pg = st.navigation([home, page1], position="sidebar")
+pg = st.navigation([etl_page, ai_page], position="sidebar")
 pg.run()

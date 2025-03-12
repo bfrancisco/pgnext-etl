@@ -58,7 +58,7 @@ def stream_text(texts):
             time.sleep(0.05)
         yield "\n\n"
 
-st.title("📊 TelaCast")
+st.title("📊 TelaCast+")
 
 # Initialize chat history
 if "messages" not in st.session_state:
