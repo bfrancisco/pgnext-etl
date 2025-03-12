@@ -52,11 +52,10 @@ def response_generator(prompt):
     return {"texts": ["I'm sorry, I don't understand that question. Can you please rephrase it?"]}
 
 def stream_text(texts):
-    for text in texts:
-        for word in text.split():
-            yield word + " "
-            time.sleep(0.05)
-        yield "\n\n"
+    for word in text.split():
+        yield word + " "
+        time.sleep(0.05)
+    st.write("")
 
 st.title("📊 TelaCast+")
 
@@ -90,7 +89,10 @@ if prompt := st.chat_input("What can I forecast for you today?"):
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         for text in response_info["texts"]:
-            st.write(text)
+            placeholder = st.empty()
+            for i in range(len(text)):
+                placeholder.markdown(text[:i+1])
+                time.sleep(0.02)
             if (text == "## Step 1: Forecast vs. Actual Comparison"):
                 st.write(table_df)
 
